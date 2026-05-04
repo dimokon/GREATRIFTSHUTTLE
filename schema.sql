@@ -38,13 +38,13 @@ CREATE TABLE drivers (
 CREATE TABLE trips (
     trip_id INT AUTO_INCREMENT PRIMARY KEY,
     route_id INT,
-    vehicle_id INT,
+    number_plate VARCHAR(20),
     driver_id INT, 
     departure_time DATETIME NOT NULL,
     arrival_time DATETIME,
     status ENUM('scheduled', 'en_route', 'completed', 'cancelled') DEFAULT 'scheduled',
     FOREIGN KEY (route_id) REFERENCES routes(route_id),
-    FOREIGN KEY (vehicle_id) REFERENCES vehicles(vehicle_id),
+    FOREIGN KEY (number_plate) REFERENCES vehicles(number_plate),
     FOREIGN KEY (driver_id) REFERENCES drivers(driver_id)
 );
 
@@ -85,12 +85,13 @@ CREATE TABLE inquiries (
 );
 
 CREATE TABLE inquirychats(
-    message_id INT AUTOINCREMENT PRIMARY KEY,
+    message_id INT AUTO_INCREMENT PRIMARY KEY,
     inquiry_id INT,
     message TEXT ,
+    sender ENUM('client','admin') DEFAULT 'admin',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (inquiry_id) REFERENCES inquiries(inquiry_id)
-)
+);
 
 CREATE TABLE reviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -102,6 +103,6 @@ CREATE TABLE reviews (
     comment TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (trip_id) REFERENCES trips(trip_id),
-    FOREIGN KEY (number_plate) REFERENCES vehicles(number_plate)
+    FOREIGN KEY (number_plate) REFERENCES vehicles(number_plate),
     FOREIGN KEY (driver_id) REFERENCES drivers(driver_id)
 );
