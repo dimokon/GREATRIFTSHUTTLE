@@ -29,6 +29,7 @@ CREATE TABLE drivers (
     phone_number VARCHAR(20) UNIQUE NOT NULL,
     license_number VARCHAR(50) UNIQUE NOT NULL,
     license_expiry_date DATE NOT NULL,
+    driver_photo_url VARCHAR(200),
     date_joined DATE DEFAULT (CURRENT_DATE),
     status ENUM('active', 'on_leave', 'suspended', 'terminated') DEFAULT 'active',
     rating_cache DECIMAL(3, 2) DEFAULT 5.00 -- Calculated average rating

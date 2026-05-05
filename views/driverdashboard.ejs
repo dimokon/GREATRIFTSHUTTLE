@@ -1,0 +1,605 @@
+﻿<% const title = 'Driver Dashboard - Great Rift Shuttle'; %>
+<%- include('header') %>
+
+<!-- Driver Dashboard -->
+<div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h3>Driver Portal</h3>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="#" class="sidebar-link active" onclick="switchDashTab(event, 'overview')">
+                <span class="sidebar-icon">📊</span>
+                <span>Overview</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'schedule')">
+                <span class="sidebar-icon">📅</span>
+                <span>My Schedule</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'trips')">
+                <span class="sidebar-icon">🚗</span>
+                <span>Active Trips</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'earnings')">
+                <span class="sidebar-icon">💰</span>
+                <span>Earnings</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'ratings')">
+                <span class="sidebar-icon">⭐</span>
+                <span>Ratings & Reviews</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'documents')">
+                <span class="sidebar-icon">📄</span>
+                <span>Documents</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'support')">
+                <span class="sidebar-icon">💬</span>
+                <span>Support</span>
+            </a>
+            <hr>
+            <a href="/login" class="sidebar-link logout">
+                <span class="sidebar-icon">🚪</span>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-content">
+        <!-- Top Bar -->
+        <div class="dashboard-topbar">
+            <h2 id="page-title">Welcome Back!</h2>
+            <div class="topbar-actions">
+                <button class="btn btn-sm btn-primary">View My Profile</button>
+            </div>
+        </div>
+
+        <!-- Overview Section -->
+        <section id="overview" class="dashboard-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🚗</div>
+                    <h3>Trips This Month</h3>
+                    <p class="stat-number">18</p>
+                    <small>Completed</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <h3>Average Rating</h3>
+                    <p class="stat-number">4.8</p>
+                    <small>Out of 5.0</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <h3>Monthly Earnings</h3>
+                    <p class="stat-number">KES 25K</p>
+                    <small>Commission</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <h3>Safety Score</h3>
+                    <p class="stat-number">99%</p>
+                    <small>Excellent</small>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Your Information</h3>
+                    <div class="driver-info">
+                        <div class="info-row">
+                            <span>Name:</span>
+                            <strong>James Kipchoge</strong>
+                        </div>
+                        <div class="info-row">
+                            <span>Driver ID:</span>
+                            <strong>DRV-001245</strong>
+                        </div>
+                        <div class="info-row">
+                            <span>License:</span>
+                            <strong>KE 5678900</strong>
+                        </div>
+                        <div class="info-row">
+                            <span>Status:</span>
+                            <strong style="color: var(--success-color);">✓ Active</strong>
+                        </div>
+                        <div class="info-row">
+                            <span>Joined:</span>
+                            <strong>Jan 15, 2024</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Next Scheduled Trip</h3>
+                    <div class="trip-card">
+                        <div class="trip-header">
+                            <h4>Nairobi → Eldoret</h4>
+                            <span class="trip-status">Scheduled</span>
+                        </div>
+                        <div class="trip-details">
+                            <p><strong>Date:</strong> May 8, 2026</p>
+                            <p><strong>Departure:</strong> 6:00 AM</p>
+                            <p><strong>Vehicle:</strong> KCA 500 K (11-seater)</p>
+                            <p><strong>Passengers:</strong> 8 Booked</p>
+                        </div>
+                        <a href="#" class="btn btn-sm btn-primary" style="width: 100%; margin-top: var(--spacing-md);">View Details</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Recent Performance</h3>
+                    <div class="performance-list">
+                        <div class="performance-item">
+                            <span>On-Time Arrivals</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 98%;"></div>
+                            </div>
+                            <small>98%</small>
+                        </div>
+                        <div class="performance-item">
+                            <span>Customer Satisfaction</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 96%;"></div>
+                            </div>
+                            <small>4.8/5.0</small>
+                        </div>
+                        <div class="performance-item">
+                            <span>Safety Compliance</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 99%;"></div>
+                            </div>
+                            <small>99%</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <a href="#" class="action-btn">
+                            <span>📍</span>
+                            <span>Start Trip</span>
+                        </a>
+                        <a href="#" class="action-btn">
+                            <span>📞</span>
+                            <span>Support</span>
+                        </a>
+                        <a href="#" class="action-btn">
+                            <span>👤</span>
+                            <span>Profile</span>
+                        </a>
+                        <a href="#" class="action-btn">
+                            <span>📋</span>
+                            <span>Documents</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule Section -->
+        <section id="schedule" class="dashboard-section">
+            <h2>My Schedule</h2>
+            <div class="card">
+                <p style="padding: var(--spacing-lg); text-align: center; color: var(--text-light);">
+                    View and manage your schedule here. Check assigned trips and request changes.
+                </p>
+            </div>
+        </section>
+
+        <!-- Trips Section -->
+        <section id="trips" class="dashboard-section">
+            <h2>Active Trips</h2>
+            <div class="card">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Trip ID</th>
+                            <th>Route</th>
+                            <th>Departure</th>
+                            <th>Status</th>
+                            <th>Passengers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TR-005432</td>
+                            <td>Nairobi - Eldoret</td>
+                            <td>2026-05-08 06:00 AM</td>
+                            <td><span class="badge badge-warning">Scheduled</span></td>
+                            <td>8/11</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Earnings Section -->
+        <section id="earnings" class="dashboard-section">
+            <h2>Earnings</h2>
+            <div class="card">
+                <p style="padding: var(--spacing-lg); text-align: center; color: var(--text-light);">
+                    Track your earnings, commission details, and payment history here.
+                </p>
+            </div>
+        </section>
+
+        <!-- Ratings Section -->
+        <section id="ratings" class="dashboard-section">
+            <h2>Ratings & Reviews</h2>
+            <div class="card">
+                <p style="padding: var(--spacing-lg); text-align: center; color: var(--text-light);">
+                    View customer ratings and feedback about your service performance.
+                </p>
+            </div>
+        </section>
+
+        <!-- Documents Section -->
+        <section id="documents" class="dashboard-section">
+            <h2>Documents</h2>
+            <div class="card">
+                <p style="padding: var(--spacing-lg); text-align: center; color: var(--text-light);">
+                    Manage your license, insurance, and other important documents.
+                </p>
+            </div>
+        </section>
+
+        <!-- Support Section -->
+        <section id="support" class="dashboard-section">
+            <h2>Support</h2>
+            <div class="card">
+                <p style="padding: var(--spacing-lg); text-align: center; color: var(--text-light);">
+                    Contact our support team for assistance and inquiries.
+                </p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<style>
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    min-height: 100vh;
+    margin-top: 60px;
+    background-color: var(--light-color);
+}
+
+.sidebar {
+    background-color: var(--dark-color);
+    color: white;
+    padding: var(--spacing-lg);
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+}
+
+.sidebar-header h3 {
+    margin: 0 0 var(--spacing-lg) 0;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-sm);
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    border-left: 3px solid transparent;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-left-color: var(--secondary-color);
+}
+
+.sidebar-icon {
+    font-size: 1.2rem;
+}
+
+.sidebar-link.logout {
+    margin-top: auto;
+    color: var(--danger-color);
+}
+
+.sidebar hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: var(--spacing-md) 0;
+}
+
+.dashboard-content {
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+}
+
+.dashboard-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    background-color: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.dashboard-topbar h2 {
+    color: var(--primary-color);
+}
+
+.dashboard-section {
+    display: none;
+}
+
+.dashboard-section.active {
+    display: block;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.stat-card {
+    background-color: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.stat-card h3 {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0.5rem 0;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.card h3 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.driver-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.trip-card {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    background-color: var(--light-color);
+}
+
+.trip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.trip-header h4 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.trip-status {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background-color: rgba(245, 124, 0, 0.1);
+    color: var(--secondary-color);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.trip-details p {
+    margin: 0.5rem 0;
+    color: var(--text-color);
+}
+
+.performance-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.performance-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.performance-item span {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 4px;
+}
+
+.performance-item small {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-lg);
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 600;
+    transition: var(--transition);
+    border: 2px solid transparent;
+}
+
+.action-btn:hover {
+    background-color: white;
+    border-color: var(--primary-color);
+}
+
+.action-btn span:first-child {
+    font-size: 1.5rem;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dashboard-table thead {
+    background-color: var(--light-color);
+}
+
+.dashboard-table th {
+    padding: var(--spacing-md);
+    text-align: left;
+    font-weight: 600;
+}
+
+.dashboard-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge-warning {
+    background-color: rgba(241, 196, 15, 0.1);
+    color: #f39c12;
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 60px;
+        z-index: 999;
+        width: 250px;
+        height: calc(100vh - 60px);
+        transition: var(--transition);
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+function switchDashTab(event, tabName) {
+    event.preventDefault();
+    
+    // Hide all sections
+    document.querySelectorAll('.dashboard-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Remove active class from all links
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Show selected section
+    document.getElementById(tabName).classList.add('active');
+    event.target.closest('.sidebar-link').classList.add('active');
+    
+    // Update page title
+    const titles = {
+        'overview': 'Welcome Back!',
+        'schedule': 'My Schedule',
+        'trips': 'Active Trips',
+        'earnings': 'Earnings',
+        'ratings': 'Ratings & Reviews',
+        'documents': 'Documents',
+        'support': 'Support'
+    };
+    document.getElementById('page-title').textContent = titles[tabName] || 'Dashboard';
+}
+</script>
+
+<%- include('footer') %>

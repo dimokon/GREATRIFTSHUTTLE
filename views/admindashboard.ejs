@@ -1,0 +1,550 @@
+﻿<% const title = 'Admin Dashboard - Great Rift Shuttle Management'; %>
+<%- include('header') %>
+
+<!-- Admin Dashboard -->
+<div class="dashboard-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h3>Admin Panel</h3>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="#" class="sidebar-link active" onclick="switchDashTab(event, 'overview')">
+                <span class="sidebar-icon">📊</span>
+                <span>Overview</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'bookings')">
+                <span class="sidebar-icon">🎫</span>
+                <span>Bookings</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'drivers')">
+                <span class="sidebar-icon">🚗</span>
+                <span>Drivers</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'routes')">
+                <span class="sidebar-icon">🗺️</span>
+                <span>Routes</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'parcels')">
+                <span class="sidebar-icon">📦</span>
+                <span>Parcels</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'reports')">
+                <span class="sidebar-icon">📈</span>
+                <span>Reports</span>
+            </a>
+            <a href="#" class="sidebar-link" onclick="switchDashTab(event, 'settings')">
+                <span class="sidebar-icon">⚙️</span>
+                <span>Settings</span>
+            </a>
+            <hr>
+            <a href="/login" class="sidebar-link logout">
+                <span class="sidebar-icon">🚪</span>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-content">
+        <!-- Top Bar -->
+        <div class="dashboard-topbar">
+            <h2 id="page-title">Dashboard Overview</h2>
+            <div class="topbar-actions">
+                <button class="btn btn-sm btn-primary">+ New Booking</button>
+            </div>
+        </div>
+
+        <!-- Overview Section -->
+        <section id="overview" class="dashboard-section active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <h3>Total Bookings</h3>
+                    <p class="stat-number">1,245</p>
+                    <small>This month</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <h3>Revenue</h3>
+                    <p class="stat-number">KES 524K</p>
+                    <small>This month</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🚗</div>
+                    <h3>Active Trips</h3>
+                    <p class="stat-number">12</p>
+                    <small>Currently</small>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <h3>Active Drivers</h3>
+                    <p class="stat-number">28</p>
+                    <small>Available</small>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Recent Bookings</h3>
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Route</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BK-001245</td>
+                                <td>Nairobi - Eldoret</td>
+                                <td>2026-05-05</td>
+                                <td>KES 900</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>BK-001244</td>
+                                <td>Nairobi - Kitale</td>
+                                <td>2026-05-04</td>
+                                <td>KES 1,200</td>
+                                <td><span class="badge badge-warning">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>BK-001243</td>
+                                <td>Eldoret - Kitale</td>
+                                <td>2026-05-04</td>
+                                <td>KES 350</td>
+                                <td><span class="badge badge-success">Completed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card">
+                    <h3>System Status</h3>
+                    <div class="status-list">
+                        <div class="status-item">
+                            <span>Server Status</span>
+                            <span class="status-badge status-online">● Online</span>
+                        </div>
+                        <div class="status-item">
+                            <span>Database</span>
+                            <span class="status-badge status-online">● Connected</span>
+                        </div>
+                        <div class="status-item">
+                            <span>Payment Gateway</span>
+                            <span class="status-badge status-online">● Active</span>
+                        </div>
+                        <div class="status-item">
+                            <span>Booking System</span>
+                            <span class="status-badge status-online">● Running</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bookings Section -->
+        <section id="bookings" class="dashboard-section">
+            <h2>Manage Bookings</h2>
+            <div class="card">
+                <div class="section-controls">
+                    <input type="text" placeholder="Search bookings..." class="search-input">
+                    <select class="filter-select">
+                        <option>All Status</option>
+                        <option>Pending</option>
+                        <option>Confirmed</option>
+                        <option>Completed</option>
+                    </select>
+                </div>
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Passenger</th>
+                            <th>Route</th>
+                            <th>Date</th>
+                            <th>Seats</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BK-001245</td>
+                            <td>John Doe</td>
+                            <td>Nairobi - Eldoret</td>
+                            <td>2026-05-10</td>
+                            <td>2</td>
+                            <td><span class="badge badge-warning">Pending</span></td>
+                            <td><button class="btn btn-sm btn-outline">View</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Drivers Section -->
+        <section id="drivers" class="dashboard-section">
+            <h2>Manage Drivers</h2>
+            <div class="card">
+                <div class="section-controls">
+                    <input type="text" placeholder="Search drivers..." class="search-input">
+                    <select class="filter-select">
+                        <option>All Status</option>
+                        <option>Active</option>
+                        <option>On Leave</option>
+                        <option>Suspended</option>
+                    </select>
+                </div>
+                <p style="padding: var(--spacing-lg); text-align: center; color: var(--text-light);">
+                    Driver management coming soon. Track driver performance, schedules, and ratings here.
+                </p>
+            </div>
+        </section>
+
+        <!-- Routes Section -->
+        <section id="routes" class="dashboard-section">
+            <h2>Manage Routes</h2>
+            <div class="card">
+                <p style="padding: var(--spacing-lg); text-align: center; color: var(--text-light);">
+                    Route management coming soon. Create, update, and manage shuttle routes here.
+                </p>
+            </div>
+        </section>
+
+        <!-- Parcels Section -->
+        <section id="parcels" class="dashboard-section">
+            <h2>Manage Parcels</h2>
+            <div class="card">
+                <p style="padding: var(--spacing-lg); text-align: center; color: var(--text-light);">
+                    Parcel management coming soon. Track and manage parcel deliveries here.
+                </p>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="dashboard-section">
+            <h2>Reports</h2>
+            <div class="card">
+                <p style="padding: var(--spacing-lg); text-align: center; color: var(--text-light);">
+                    Reports coming soon. Generate booking, revenue, and performance reports here.
+                </p>
+            </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="dashboard-section">
+            <h2>Settings</h2>
+            <div class="card">
+                <p style="padding: var(--spacing-lg); text-align: center; color: var(--text-light);">
+                    Settings coming soon. Manage system configuration and preferences here.
+                </p>
+            </div>
+        </section>
+    </main>
+</div>
+
+<style>
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    min-height: 100vh;
+    margin-top: 60px;
+    background-color: var(--light-color);
+}
+
+.sidebar {
+    background-color: var(--dark-color);
+    color: white;
+    padding: var(--spacing-lg);
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+}
+
+.sidebar-header h3 {
+    margin: 0 0 var(--spacing-lg) 0;
+    color: var(--secondary-color);
+    font-size: 1.2rem;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-sm);
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    border-left: 3px solid transparent;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-left-color: var(--secondary-color);
+}
+
+.sidebar-icon {
+    font-size: 1.2rem;
+}
+
+.sidebar-link.logout {
+    margin-top: auto;
+    color: var(--danger-color);
+}
+
+.sidebar hr {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: var(--spacing-md) 0;
+}
+
+.dashboard-content {
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+}
+
+.dashboard-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    background-color: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.dashboard-topbar h2 {
+    color: var(--primary-color);
+}
+
+.topbar-actions {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.dashboard-section {
+    display: none;
+}
+
+.dashboard-section.active {
+    display: block;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-xl);
+}
+
+.stat-card {
+    background-color: white;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.stat-card h3 {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin: 0.5rem 0;
+}
+
+.stat-card small {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.card h3 {
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-lg);
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.dashboard-table thead {
+    background-color: var(--light-color);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.dashboard-table th {
+    padding: var(--spacing-md);
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.dashboard-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dashboard-table tbody tr:hover {
+    background-color: var(--light-color);
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background-color: rgba(39, 174, 96, 0.1);
+    color: var(--success-color);
+}
+
+.badge-warning {
+    background-color: rgba(241, 196, 15, 0.1);
+    color: #f39c12;
+}
+
+.status-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.status-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+}
+
+.status-badge {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.status-online {
+    color: var(--success-color);
+}
+
+.section-controls {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.search-input,
+.filter-select {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-family: inherit;
+}
+
+.search-input {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 60px;
+        z-index: 999;
+        width: 250px;
+        height: calc(100vh - 60px);
+        transition: var(--transition);
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<script>
+function switchDashTab(event, tabName) {
+    event.preventDefault();
+    
+    // Hide all sections
+    document.querySelectorAll('.dashboard-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Remove active class from all links
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Show selected section
+    document.getElementById(tabName).classList.add('active');
+    event.target.closest('.sidebar-link').classList.add('active');
+    
+    // Update page title
+    const titles = {
+        'overview': 'Dashboard Overview',
+        'bookings': 'Manage Bookings',
+        'drivers': 'Manage Drivers',
+        'routes': 'Manage Routes',
+        'parcels': 'Manage Parcels',
+        'reports': 'Reports',
+        'settings': 'Settings'
+    };
+    document.getElementById('page-title').textContent = titles[tabName] || 'Dashboard';
+}
+</script>
+
+<%- include('footer') %>
