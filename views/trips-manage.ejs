@@ -1,0 +1,54 @@
+<% const title='Manage Trips - Great Rift Shuttle' ; %>
+    <%- include('dashboard-header') %>
+
+        <div class="dashboard-wrapper">
+            <%- include('dashboard-aside', { activePage: 'trips' }) %>
+
+                <!-- Main Content -->
+                <main class="dashboard-main">
+                    <div class="dashboard-header">
+                        <h1>My Trips</h1>
+                        <div class="header-actions">
+                            <a href="/routes" class="btn btn-primary btn-sm">+ Book New Trip</a>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h2>Manage Your Trips</h2>
+
+                        <div class="card-controls">
+                            <div class="search-box">
+                                <input type="text" placeholder="Search trips by route or date..." />
+                            </div>
+                            <div class="filter-group">
+                                <select>
+                                    <option>All Status</option>
+                                    <option>Upcoming</option>
+                                    <option>Completed</option>
+                                    <option>Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🚌</div>
+                            <h3>Manage Your Trips</h3>
+                            <p>
+                                Here you can view all your scheduled trips, track their current status, check departure
+                                times,
+                                and manage your travel plans. Each trip shows important details like the route, date,
+                                time,
+                                seat assignment, driver information, and current booking status.
+                            </p>
+                            <p style="color: var(--text-light); font-size: 0.95rem; margin-top: var(--spacing-md);">
+                                Features coming soon: real-time tracking, trip notifications, seat selection, and trip
+                                modifications.
+                            </p>
+                            <a href="/routes" class="btn btn-primary" style="margin-top: var(--spacing-md);">Browse
+                                Available Routes</a>
+                        </div>
+                    </div>
+                </main>
+        </div>
+
+        <%- include('dashboard-footer') %>

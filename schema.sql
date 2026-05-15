@@ -107,3 +107,15 @@ CREATE TABLE reviews (
     FOREIGN KEY (number_plate) REFERENCES vehicles(number_plate),
     FOREIGN KEY (driver_id) REFERENCES drivers(driver_id)
 );
+
+CREATE TABLE admin_users (
+    admin_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO admin_users(username, password_hash) VALUES
+('kevin', '$2b$10$bmc/Hy973Mrws5VhLrHf7ercPolYZP2RchODxIPSIGz0Gv/eOOtHi'),
+('ian', '$2b$10$XBizTFaMgfdq9cHbL9wfhe2Ws7pGwRnoJLuGim0pIurM4OuZ3F/z.');
+

@@ -1,0 +1,106 @@
+<% const title='Browse Routes - Great Rift Shuttle' ; %>
+    <%- include('dashboard-header') %>
+
+        <div class="dashboard-wrapper">
+            <%- include('dashboard-aside', { activePage: 'routes' }) %>
+
+                <!-- Main Content -->
+                <main class="dashboard-main">
+                    <div class="dashboard-header">
+                        <h1>Available Routes</h1>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h2>Browse & Book Routes</h2>
+
+                        <div class="card-controls">
+                            <div class="search-box">
+                                <input type="text" placeholder="Search routes by origin or destination..." />
+                            </div>
+                            <div class="filter-group">
+                                <select>
+                                    <option>All Routes</option>
+                                    <option>Popular Routes</option>
+                                    <option>Recently Added</option>
+                                    <option>Best Price</option>
+                                    <option>Shortest Duration</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🗺️</div>
+                            <h3>Browse Available Routes</h3>
+                            <p>
+                                Explore all available shuttle routes across Kenya. View departure times, arrival times,
+                                fare prices, estimated travel duration, available seats, and shuttle specifications.
+                                Compare routes and book your preferred trip.
+                            </p>
+                            <p style="color: var(--text-light); font-size: 0.95rem; margin-top: var(--spacing-md);">
+                                Features coming soon: real-time seat availability, price comparison, direct booking,
+                                vehicle details, driver ratings, and trip tracking.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Quick Route Categories -->
+                    <div class="dashboard-card">
+                        <h2>Popular Routes</h2>
+                        <div class="item-list">
+                            <div class="item-card">
+                                <div class="item-info">
+                                    <h4>Nairobi ↔ Kisumu</h4>
+                                    <div class="item-details">
+                                        <span class="item-detail"><strong>Departure:</strong> Daily at 6:00 AM, 12:00
+                                            PM, 6:00 PM</span>
+                                        <span class="item-detail"><strong>Duration:</strong> ~6-7 hours</span>
+                                        <span class="item-detail"><strong>Fare:</strong> From KES 900</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-sm">Book Now</button>
+                            </div>
+
+                            <div class="item-card">
+                                <div class="item-info">
+                                    <h4>Nairobi ↔ Eldoret</h4>
+                                    <div class="item-details">
+                                        <span class="item-detail"><strong>Departure:</strong> Daily at 8:00 AM, 2:00 PM,
+                                            8:00 PM</span>
+                                        <span class="item-detail"><strong>Duration:</strong> ~4-5 hours</span>
+                                        <span class="item-detail"><strong>Fare:</strong> From KES 1,200</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-sm">Book Now</button>
+                            </div>
+
+                            <div class="item-card">
+                                <div class="item-info">
+                                    <h4>Eldoret ↔ Kitale</h4>
+                                    <div class="item-details">
+                                        <span class="item-detail"><strong>Departure:</strong> Daily at 9:00 AM, 3:00 PM,
+                                            9:00 PM</span>
+                                        <span class="item-detail"><strong>Duration:</strong> ~2-3 hours</span>
+                                        <span class="item-detail"><strong>Fare:</strong> From KES 600</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-sm">Book Now</button>
+                            </div>
+
+                            <div class="item-card">
+                                <div class="item-info">
+                                    <h4>Nairobi ↔ Mombasa</h4>
+                                    <div class="item-details">
+                                        <span class="item-detail"><strong>Departure:</strong> Daily at 7:00 AM, 1:00 PM,
+                                            7:00 PM</span>
+                                        <span class="item-detail"><strong>Duration:</strong> ~8-9 hours</span>
+                                        <span class="item-detail"><strong>Fare:</strong> From KES 1,500</span>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btn-sm">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+        </div>
+
+        <%- include('dashboard-footer') %>
