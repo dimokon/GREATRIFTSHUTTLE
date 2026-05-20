@@ -1,135 +1,188 @@
-<% const title='Manage Trips - Great Rift Shuttle' ; %>
-    <%- include('dashboard-header') %>
+<% const title = 'Manage Trips - Great Rift Shuttle'; %>
+<%- include('dashboard-header') %>
 
-        <div class="dashboard-wrapper">
-            <%- include('dashboard-aside', { activePage: 'trips' }) %>
+<div class="dashboard-wrapper">
+  <%- include('dashboard-aside', { activePage: 'trips' }) %>
 
-                <!-- Main Content -->
-                <main class="dashboard-main">
-                    <div class="dashboard-header">
-                        <h1>My Trips</h1>
-                        <button id="openAddTripModalBtn" class="btn btn-primary">Add New Trip</button>
-                    </div>
+  <!-- Main Content -->
+  <main class="dashboard-main">
+    <div class="dashboard-header">
+      <h1>My Trips</h1>
+      <div class="header-actions">
+        <button id="openNewTripBtn" class="btn btn-primary">+ Create New Trip</button>
+      </div>
+    </div>
 
-                    <dialog id="addTripModal" class="dashboard-card modal-dialog">
-                        <div class="modal-header">
-                            <h2>Add Trip</h2>
-                            <button id="closeAddTripModalBtn" class="close-btn">&times;</button>
-                        </div>
-                        <form action="/add-trip" method="post">
-                            <div class="group">
-                                <label for="route_id">Route ID</label>
-                                <input type="number" id="route_id" name="route_id" required>
-                            </div>
-                            <div class="group">
-                                <label for="number_plate">Vehicle Plate</label>
-                                <input type="text" id="number_plate" name="number_plate" required>
-                            </div>
-                            <div class="group">
-                                <label for="driver_id">Driver ID</label>
-                                <input type="number" id="driver_id" name="driver_id" required>
-                            </div>
-                            <div class="group">
-                                <label for="departure_time">Departure Time</label>
-                                <input type="datetime-local" id="departure_time" name="departure_time" required>
-                            </div>
-                            <div class="group">
-                                <label for="arrival_time">Arrival Time</label>
-                                <input type="datetime-local" id="arrival_time" name="arrival_time">
-                            </div>
-                            <div class="group">
-                                <label for="status">Status</label>
-                                <select id="status" name="status">
-                                    <option value="scheduled">Scheduled</option>
-                                    <option value="en_route">En Route</option>
-                                    <option value="completed">Completed</option>
-                                    <option value="cancelled">Cancelled</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Trip</button>
-                        </form>
-                    </dialog>
-
-                    <div class="dashboard-card">
-                        <h2>Manage Your Trips</h2>
-
-                        <div class="card-controls">
-                            <div class="search-box">
-                                <input type="text" placeholder="Search trips by route or date..." />
-                            </div>
-                            <div class="filter-group">
-                                <select>
-                                    <option>All Status</option>
-                                    <option>Scheduled</option>
-                                    <option>En Route</option>
-                                    <option>Completed</option>
-                                    <option>Cancelled</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="trips-list">
-                            <table class="routes-table">
-                                <thead>
-                                    <tr>
-                                        <th>Trip ID</th>
-                                        <th>Route</th>
-                                        <th>Vehicle</th>
-                                        <th>Driver ID</th>
-                                        <th>Departure</th>
-                                        <th>Arrival</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% if (typeof trips !== 'undefined' && trips.length > 0) { %>
-                                        <% trips.forEach(trip => { %>
-                                            <tr>
-                                                <td><%= trip.trip_id %></td>
-                                                <td><%= trip.origin ? trip.origin + ' - ' + trip.destination : 'N/A' %></td>
-                                                <td><%= trip.number_plate %></td>
-                                                <td><%= trip.driver_id %></td>
-                                                <td><%= trip.departure_time.toISOString().slice(0, 19).replace('T', ' ') %></td>
-                                                <td><%= trip.arrival_time ? trip.arrival_time.toISOString().slice(0, 19).replace('T', ' ') : 'TBD' %></td>
-                                                <td><%= trip.status %></td>
-                                            </tr>
-                                        <% }) %>
-                                    <% } else { %>
-                                        <tr>
-                                            <td colspan="7" style="text-align: center; padding: 2rem;">No trips found.</td>
-                                        </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </main>
+    <div id="modalBackdrop" class="modal-backdrop"></div>
+    <div id="newTripModal" class="popup-modal" aria-hidden="true">
+      <div class="popup-content">
+        <div class="popup-header">
+          <h2>Create New Trip</h2>
+          <button class="modal-close" type="button" onclick="closeNewTripModal()">&times;</button>
         </div>
+        <form id="newTripForm" method="POST" action="/add-trip" class="popup-form">
+          <div class="group">
+            <label for="driverSelect">Driver</label>
+            <select id="driverSelect" name="driver_id" required>
+              <option value="">-- Choose Driver --</option>
+              <% drivers.forEach(driver => { %>
+                <option value="<%= driver.driver_id %>"><%= driver.first_name %> <%= driver.last_name %></option>
+              <% }); %>
+            </select>
+          </div>
 
-        <script>
-            const addTripModal = document.getElementById('addTripModal');
-            const openAddTripModalBtn = document.getElementById('openAddTripModalBtn');
-            const closeAddTripModalBtn = document.getElementById('closeAddTripModalBtn');
+          <div class="group">
+            <label for="routeSelect">Route</label>
+            <select id="routeSelect" name="route_id" required>
+              <option value="">-- Choose Route --</option>
+              <% routes.forEach(route => { %>
+                <option value="<%= route.route_id %>"><%= route.origin %> → <%= route.destination %></option>
+              <% }); %>
+            </select>
+          </div>
 
-            openAddTripModalBtn.addEventListener('click', () => {
-                addTripModal.showModal();
-            });
+          <div class="group">
+            <label for="vehicleSelect">Vehicle</label>
+            <select id="vehicleSelect" name="number_plate" required>
+              <option value="">-- Choose Vehicle --</option>
+              <% vehicles.forEach(vehicle => { %>
+                <option value="<%= vehicle.number_plate %>"><%= vehicle.model %> (<%= vehicle.number_plate %>)</option>
+              <% }); %>
+            </select>
+          </div>
 
-            closeAddTripModalBtn.addEventListener('click', () => {
-                addTripModal.close();
-            });
+          <div class="group">
+            <label for="departureTime">Departure Time</label>
+            <input type="datetime-local" id="departureTime" name="departure_time" required />
+          </div>
 
-            addTripModal.addEventListener('click', (e) => {
-                const dialogDimensions = addTripModal.getBoundingClientRect()
-                if (
-                    e.clientX < dialogDimensions.left ||
-                    e.clientX > dialogDimensions.right ||
-                    e.clientY < dialogDimensions.top ||
-                    e.clientY > dialogDimensions.bottom
-                ) {
-                    addTripModal.close()
-                }
-            });
-        </script>
+          <div class="group">
+            <label for="status">Status</label>
+            <select id="status" name="status" required>
+              <option value="scheduled">Scheduled</option>
+              <option value="en_route">En Route</option>
+              <option value="completed">Completed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
 
-        <%- include('dashboard-footer') %>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeNewTripModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create Trip</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="dashboard-card">
+      <h2>Manage Your Trips</h2>
+
+      <div class="card-controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search trips by route or date..." />
+        </div>
+        <div class="filter-group">
+          <select id="statusFilter">
+            <option value="">All Status</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="en_route">En Route</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <% if (trips && trips.length > 0) { %>
+        <div class="trips-table-wrapper">
+          <table class="trips-table">
+            <thead>
+              <tr>
+                <th>Trip ID</th>
+                <th>Driver</th>
+                <th>Route</th>
+                <th>Vehicle</th>
+                <th>Departure</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tripsTableBody">
+              <% trips.forEach(trip => {
+                const driver = drivers.find(d => d.driver_id === trip.driver_id);
+                const route = routes.find(r => r.route_id === trip.route_id);
+                const vehicle = vehicles.find(v => v.number_plate === trip.number_plate);
+              %>
+                <tr class="trip-row" data-status="<%= trip.status %>" data-route="<%= route ? route.origin + ' → ' + route.destination : '' %>">
+                  <td><%= trip.trip_id %></td>
+                  <td><%= driver ? driver.first_name + ' ' + driver.last_name : 'N/A' %></td>
+                  <td><%= route ? route.origin + ' → ' + route.destination : 'N/A' %></td>
+                  <td><%= vehicle ? vehicle.model + ' (' + vehicle.number_plate + ')' : 'N/A' %></td>
+                  <td><%= trip.departure_time ? new Date(trip.departure_time).toLocaleString() : 'N/A' %></td>
+                  <td><span class="status-badge status-<%= trip.status %>"><%= trip.status.charAt(0).toUpperCase() + trip.status.slice(1).replace('_', ' ') %></span></td>
+                  <td>
+                    <a href="/update-trip-status?tripId=<%= trip.trip_id %>&status=en_route" class="btn btn-sm btn-warning" <% if (trip.status !== 'scheduled') { %>style="display:none;"<% } %>>Start</a>
+                    <a href="/update-trip-status?tripId=<%= trip.trip_id %>&status=completed" class="btn btn-sm btn-success" <% if (trip.status !== 'en_route') { %>style="display:none;"<% } %>>Complete</a>
+                    <a href="/delete-trip?tripId=<%= trip.trip_id %>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <p class="empty-state">No trips found. <a href="#" onclick="openNewTripModal()">Create your first trip</a></p>
+      <% } %>
+    </div>
+
+    <script>
+      const openNewTripBtn = document.getElementById('openNewTripBtn');
+      const newTripModal = document.getElementById('newTripModal');
+      const modalBackdrop = document.getElementById('modalBackdrop');
+
+      function openNewTripModal() {
+        newTripModal.classList.add('show');
+        modalBackdrop.classList.add('show');
+      }
+
+      function closeNewTripModal() {
+        newTripModal.classList.remove('show');
+        modalBackdrop.classList.remove('show');
+      }
+
+      openNewTripBtn.addEventListener('click', openNewTripModal);
+
+      modalBackdrop.addEventListener('click', closeNewTripModal);
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && newTripModal.classList.contains('show')) {
+          closeNewTripModal();
+        }
+      });
+
+      // Search and filter functionality
+      const searchInput = document.getElementById('searchInput');
+      const statusFilter = document.getElementById('statusFilter');
+      const tripsTableBody = document.getElementById('tripsTableBody');
+
+      function filterTrips() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const statusValue = statusFilter.value;
+        const rows = tripsTableBody.querySelectorAll('tr');
+
+        rows.forEach(row => {
+          const status = row.dataset.status;
+          const route = row.dataset.route.toLowerCase();
+
+          const matchesSearch = route.includes(searchTerm) || row.textContent.toLowerCase().includes(searchTerm);
+          const matchesStatus = !statusValue || status === statusValue;
+
+          row.style.display = (matchesSearch && matchesStatus) ? '' : 'none';
+        });
+      }
+
+      searchInput.addEventListener('input', filterTrips);
+      statusFilter.addEventListener('change', filterTrips);
+    </script>
+  </main>
+</div>
+
+<%- include('dashboard-footer') %>

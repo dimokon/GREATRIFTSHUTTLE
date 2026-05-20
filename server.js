@@ -157,22 +157,16 @@ app.get("/trips", (req, res) => {
 
 app.post("/add-trip", (req, res) => {
   if (req.session && req.session.user) {
-    const {
-      route_id,
-      number_plate,
-      driver_id,
-      departure_time,
-      arrival_time,
-      status,
-    } = req.body;
-    const insertQuery = `INSERT INTO trips (route_id, number_plate, driver_id, departure_time, arrival_time, status) VALUES ('${route_id}','${number_plate}','${driver_id}','${departure_time}','${arrival_time}','${status}')`;
+    const { driver_id, route_id, number_plate, departure_time, status } =
+      req.body;
+    const insertQuery = `INSERT INTO trips (driver_id, route_id, number_plate, departure_time, status) VALUES (${driver_id}, ${route_id}, "${number_plate}", "${departure_time}", "${status}")`;
 
-    dbConn.query(insertQuery, (err, results) => {
+    dbConn.query(insertQuery, (err, result) => {
       if (err) {
-        console.error("Error adding trip:", err);
-        return res.status(500).send("Failed to add trip");
+        console.error("Database error:", err);
+        return res.status(500).send("Internal Server Error");
       }
-      res.redirect("/trips?addSuccess=true");
+      res.redirect("/trips");
     });
   } else {
     res.status(401).redirect("/login");
