@@ -8,10 +8,47 @@
                 <main class="dashboard-main">
                     <div class="dashboard-header">
                         <h1>My Trips</h1>
-                        <div class="header-actions">
-                            <a href="/routes" class="btn btn-primary btn-sm">+ Book New Trip</a>
-                        </div>
+                        <button id="openAddTripModalBtn" class="btn btn-primary">Add New Trip</button>
                     </div>
+
+                    <dialog id="addTripModal" class="dashboard-card modal-dialog">
+                        <div class="modal-header">
+                            <h2>Add Trip</h2>
+                            <button id="closeAddTripModalBtn" class="close-btn">&times;</button>
+                        </div>
+                        <form action="/add-trip" method="post">
+                            <div class="group">
+                                <label for="route_id">Route ID</label>
+                                <input type="number" id="route_id" name="route_id" required>
+                            </div>
+                            <div class="group">
+                                <label for="number_plate">Vehicle Plate</label>
+                                <input type="text" id="number_plate" name="number_plate" required>
+                            </div>
+                            <div class="group">
+                                <label for="driver_id">Driver ID</label>
+                                <input type="number" id="driver_id" name="driver_id" required>
+                            </div>
+                            <div class="group">
+                                <label for="departure_time">Departure Time</label>
+                                <input type="datetime-local" id="departure_time" name="departure_time" required>
+                            </div>
+                            <div class="group">
+                                <label for="arrival_time">Arrival Time</label>
+                                <input type="datetime-local" id="arrival_time" name="arrival_time">
+                            </div>
+                            <div class="group">
+                                <label for="status">Status</label>
+                                <select id="status" name="status">
+                                    <option value="scheduled">Scheduled</option>
+                                    <option value="en_route">En Route</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Trip</button>
+                        </form>
+                    </dialog>
 
                     <div class="dashboard-card">
                         <h2>Manage Your Trips</h2>
@@ -23,32 +60,76 @@
                             <div class="filter-group">
                                 <select>
                                     <option>All Status</option>
-                                    <option>Upcoming</option>
+                                    <option>Scheduled</option>
+                                    <option>En Route</option>
                                     <option>Completed</option>
                                     <option>Cancelled</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="empty-state">
-                            <div class="empty-state-icon">🚌</div>
-                            <h3>Manage Your Trips</h3>
-                            <p>
-                                Here you can view all your scheduled trips, track their current status, check departure
-                                times,
-                                and manage your travel plans. Each trip shows important details like the route, date,
-                                time,
-                                seat assignment, driver information, and current booking status.
-                            </p>
-                            <p style="color: var(--text-light); font-size: 0.95rem; margin-top: var(--spacing-md);">
-                                Features coming soon: real-time tracking, trip notifications, seat selection, and trip
-                                modifications.
-                            </p>
-                            <a href="/routes" class="btn btn-primary" style="margin-top: var(--spacing-md);">Browse
-                                Available Routes</a>
+                        <div class="trips-list">
+                            <table class="routes-table">
+                                <thead>
+                                    <tr>
+                                        <th>Trip ID</th>
+                                        <th>Route</th>
+                                        <th>Vehicle</th>
+                                        <th>Driver ID</th>
+                                        <th>Departure</th>
+                                        <th>Arrival</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (typeof trips !== 'undefined' && trips.length > 0) { %>
+                                        <% trips.forEach(trip => { %>
+                                            <tr>
+                                                <td><%= trip.trip_id %></td>
+                                                <td><%= trip.origin ? trip.origin + ' - ' + trip.destination : 'N/A' %></td>
+                                                <td><%= trip.number_plate %></td>
+                                                <td><%= trip.driver_id %></td>
+                                                <td><%= trip.departure_time.toISOString().slice(0, 19).replace('T', ' ') %></td>
+                                                <td><%= trip.arrival_time ? trip.arrival_time.toISOString().slice(0, 19).replace('T', ' ') : 'TBD' %></td>
+                                                <td><%= trip.status %></td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="7" style="text-align: center; padding: 2rem;">No trips found.</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </main>
         </div>
+
+        <script>
+            const addTripModal = document.getElementById('addTripModal');
+            const openAddTripModalBtn = document.getElementById('openAddTripModalBtn');
+            const closeAddTripModalBtn = document.getElementById('closeAddTripModalBtn');
+
+            openAddTripModalBtn.addEventListener('click', () => {
+                addTripModal.showModal();
+            });
+
+            closeAddTripModalBtn.addEventListener('click', () => {
+                addTripModal.close();
+            });
+
+            addTripModal.addEventListener('click', (e) => {
+                const dialogDimensions = addTripModal.getBoundingClientRect()
+                if (
+                    e.clientX < dialogDimensions.left ||
+                    e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top ||
+                    e.clientY > dialogDimensions.bottom
+                ) {
+                    addTripModal.close()
+                }
+            });
+        </script>
 
         <%- include('dashboard-footer') %>

@@ -1,6 +1,7 @@
 /* ============================================================
    Dashboard Styles
    ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 .dashboard-wrapper {
     display: grid;
@@ -14,6 +15,22 @@ a:visited {
     color: white;
 }
 
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
 
 /* ============================================================
    Sidebar Navigation
@@ -565,4 +582,81 @@ a:visited {
 .dashboard-sidebar::-webkit-scrollbar-thumb:hover,
 .dashboard-main::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================
+   Modals
+   ============================================================ */
+
+.modal-dialog {
+    border: none;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-xl);
+    width: 90%;
+    max-width: 500px;
+    box-shadow: var(--shadow-lg);
+    margin: auto;
+}
+
+.modal-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.modal-header h2 {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-size: 1.5rem;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    color: var(--text-light);
+    transition: var(--transition);
+}
+
+.close-btn:hover {
+    color: var(--danger-color);
+}
+
+.modal-dialog, .modal-dialog input, .modal-dialog button {
+    font-family: 'Outfit', sans-serif;
+}
+
+.modal-dialog .group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-dialog .group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.modal-dialog .group input {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.modal-dialog .group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(30, 95, 143, 0.1);
 }

@@ -1,0 +1,133 @@
+<% const title = 'Manage Drivers - Great Rift Shuttle'; %>
+<%- include('dashboard-header') %>
+
+<div class="dashboard-wrapper">
+    <%- include('dashboard-aside', { activePage: 'drivers' }) %>
+
+    <main class="dashboard-main">
+        <div class="dashboard-header">
+            <h1>Manage Drivers</h1>
+            <button id="openAddDriverModalBtn" class="btn btn-primary">Add New Driver</button>
+        </div>
+
+        <dialog id="addDriverModal" class="dashboard-card modal-dialog">
+            <div class="modal-header">
+                <h2>Add Driver</h2>
+                <button id="closeAddDriverModalBtn" class="close-btn">&times;</button>
+            </div>
+            <form action="/add-driver" method="post">
+                <div class="group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" id="first_name" name="first_name" required>
+                </div>
+                <div class="group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" id="last_name" name="last_name" required>
+                </div>
+                <div class="group">
+                    <label for="id_number">ID Number</label>
+                    <input type="text" id="id_number" name="id_number" required>
+                </div>
+                <div class="group">
+                    <label for="phone_number">Phone Number</label>
+                    <input type="text" id="phone_number" name="phone_number" required>
+                </div>
+                <div class="group">
+                    <label for="license_number">License Number</label>
+                    <input type="text" id="license_number" name="license_number" required>
+                </div>
+                <div class="group">
+                    <label for="license_expiry_date">License Expiry Date</label>
+                    <input type="date" id="license_expiry_date" name="license_expiry_date" required>
+                </div>
+                <div class="group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option value="active">Active</option>
+                        <option value="on_leave">On Leave</option>
+                        <option value="suspended">Suspended</option>
+                        <option value="terminated">Terminated</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Driver</button>
+            </form>
+        </dialog>
+
+        <div class="dashboard-card">
+            <h2>Driver Roster</h2>
+
+            <div class="card-controls">
+                <div class="search-box">
+                    <input type="text" placeholder="Search drivers by name, license, or status..." />
+                </div>
+            </div>
+
+            <div class="drivers-list">
+                <table class="routes-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>ID Number</th>
+                            <th>Phone</th>
+                            <th>License</th>
+                            <th>Expiry</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% (drivers || []).forEach(driver => { %>
+                            <tr>
+                                <td><%= driver.driver_id %></td>
+                                <td><%= driver.first_name %> <%= driver.last_name %></td>
+                                <td><%= driver.id_number %></td>
+                                <td><%= driver.phone_number %></td>
+                                <td><%= driver.license_number %></td>
+                                <td><%= driver.license_expiry_date ? driver.license_expiry_date.toISOString().slice(0, 10) : '' %></td>
+                                <td>
+                                    <form action="/update-driver-status" method="post" class="status-form">
+                                        <input type="hidden" name="driver_id" value="<%= driver.driver_id %>">
+                                        <select name="status" class="status-select" onchange="this.form.submit()" required>
+                                            <option value="active" <%= driver.status === 'active' ? 'selected' : '' %>>Active</option>
+                                            <option value="suspended" <%= driver.status === 'suspended' ? 'selected' : '' %>>Suspended</option>
+                                            <option value="terminated" <%= driver.status === 'terminated' ? 'selected' : '' %>>Terminated</option>
+                                            <option value="rest" <%= driver.status === 'on_leave' ? 'selected' : '' %>>Rest</option>
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    const addDriverModal = document.getElementById('addDriverModal');
+    const openAddDriverModalBtn = document.getElementById('openAddDriverModalBtn');
+    const closeAddDriverModalBtn = document.getElementById('closeAddDriverModalBtn');
+
+    openAddDriverModalBtn.addEventListener('click', () => {
+        addDriverModal.showModal();
+    });
+
+    closeAddDriverModalBtn.addEventListener('click', () => {
+        addDriverModal.close();
+    });
+
+    addDriverModal.addEventListener('click', (e) => {
+        const dialogDimensions = addDriverModal.getBoundingClientRect();
+        if (
+            e.clientX < dialogDimensions.left ||
+            e.clientX > dialogDimensions.right ||
+            e.clientY < dialogDimensions.top ||
+            e.clientY > dialogDimensions.bottom
+        ) {
+            addDriverModal.close();
+        }
+    });
+</script>
+
+<%- include('dashboard-footer') %>

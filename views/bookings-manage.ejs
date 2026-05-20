@@ -8,10 +8,46 @@
                 <main class="dashboard-main">
                     <div class="dashboard-header">
                         <h1>My Bookings</h1>
-                        <div class="header-actions">
-                            <a href="/routes" class="btn btn-primary btn-sm">+ New Booking</a>
-                        </div>
+                        <button id="openAddBookingModalBtn" class="btn btn-primary">Add New Booking</button>
                     </div>
+
+                    <dialog id="addBookingModal" class="dashboard-card modal-dialog">
+                        <div class="modal-header">
+                            <h2>Add Booking</h2>
+                            <button id="closeAddBookingModalBtn" class="close-btn">&times;</button>
+                        </div>
+                        <form action="/add-booking" method="post">
+                            <div class="group">
+                                <label for="trip_id">Trip ID</label>
+                                <input type="number" id="trip_id" name="trip_id" required>
+                            </div>
+                            <div class="group">
+                                <label for="client_name">Passenger Name</label>
+                                <input type="text" id="client_name" name="client_name" required>
+                            </div>
+                            <div class="group">
+                                <label for="client_phone">Phone</label>
+                                <input type="text" id="client_phone" name="client_phone" required>
+                            </div>
+                            <div class="group">
+                                <label for="client_email">Email</label>
+                                <input type="email" id="client_email" name="client_email" required>
+                            </div>
+                            <div class="group">
+                                <label for="seat_number">Seat Number</label>
+                                <input type="number" id="seat_number" name="seat_number" required>
+                            </div>
+                            <div class="group">
+                                <label for="payment_status">Payment Status</label>
+                                <select id="payment_status" name="payment_status">
+                                    <option value="pending">Pending</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="refunded">Refunded</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Booking</button>
+                        </form>
+                    </dialog>
 
                     <div class="dashboard-card">
                         <h2>Manage Bookings</h2>
@@ -23,31 +59,78 @@
                             <div class="filter-group">
                                 <select>
                                     <option>All Status</option>
-                                    <option>Confirmed</option>
                                     <option>Pending</option>
-                                    <option>Completed</option>
-                                    <option>Cancelled</option>
+                                    <option>Paid</option>
+                                    <option>Refunded</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="empty-state">
-                            <div class="empty-state-icon">🎫</div>
-                            <h3>Manage Your Bookings</h3>
-                            <p>
-                                View all your shuttle bookings with detailed information including booking confirmation,
-                                reservation dates, seat allocations, pricing details, and payment status.
-                                Cancel, modify, or download booking confirmations.
-                            </p>
-                            <p style="color: var(--text-light); font-size: 0.95rem; margin-top: var(--spacing-md);">
-                                Features coming soon: booking modifications, cancellation requests, e-tickets, and
-                                booking history.
-                            </p>
-                            <a href="/routes" class="btn btn-primary" style="margin-top: var(--spacing-md);">Book a New
-                                Trip</a>
+                        <div class="bookings-list">
+                            <table class="routes-table">
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Passenger</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Route</th>
+                                        <th>Date</th>
+                                        <th>Seats</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (typeof bookings !== 'undefined' && bookings.length > 0) { %>
+                                        <% bookings.forEach(booking => { %>
+                                            <tr>
+                                                <td><%= booking.booking_id %></td>
+                                                <td><%= booking.client_name %></td>
+                                                <td><%= booking.client_phone %></td>
+                                                <td><%= booking.client_email %></td>
+                                                <td><%= booking.origin ? booking.origin + ' - ' + booking.destination : 'N/A' %></td>
+                                                <td><%= booking.booking_date.toISOString().slice(0, 19).replace('T', ' ') %></td>
+                                                <td><%= booking.seat_number %></td>
+                                                <td><%= booking.payment_status %></td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="8" style="text-align: center; padding: 2rem;">No bookings found.</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </main>
         </div>
+
+        <script>
+            const addBookingModal = document.getElementById('addBookingModal');
+            const openAddBookingModalBtn = document.getElementById('openAddBookingModalBtn');
+            const closeAddBookingModalBtn = document.getElementById('closeAddBookingModalBtn');
+
+            openAddBookingModalBtn.addEventListener('click', () => {
+                addBookingModal.showModal();
+            });
+
+            closeAddBookingModalBtn.addEventListener('click', () => {
+                addBookingModal.close();
+            });
+
+            // Close when clicking outside
+            addBookingModal.addEventListener('click', (e) => {
+                const dialogDimensions = addBookingModal.getBoundingClientRect()
+                if (
+                    e.clientX < dialogDimensions.left ||
+                    e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top ||
+                    e.clientY > dialogDimensions.bottom
+                ) {
+                    addBookingModal.close()
+                }
+            });
+        </script>
 
         <%- include('dashboard-footer') %>

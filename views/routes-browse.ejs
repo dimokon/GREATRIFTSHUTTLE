@@ -8,7 +8,38 @@
                 <main class="dashboard-main">
                     <div class="dashboard-header">
                         <h1>Available Routes</h1>
+                        <button id="openAddRouteModalBtn" class="btn btn-primary">Add New Route</button>
                     </div>
+
+                    <dialog id="addRouteModal" class="dashboard-card modal-dialog">
+                        <div class="modal-header">
+                            <h2>Add Route</h2>
+                            <button id="closeAddRouteModalBtn" class="close-btn">&times;</button>
+                        </div>
+                        <form action="/add-route" method="post">
+                            <div class="group">
+                                <label for="origin">Origin</label>
+                                <input type="text" id="origin" name="origin" required>
+                            </div>
+                            <div class="group">
+                                <label for="destination">Destination</label>
+                                <input type="text" id="destination" name="destination" required>
+                            </div>
+                            <div class="group">
+                                <label for="base_price">Base Price</label>
+                                <input type="number" id="base_price" name="base_price" step="0.01" required>
+                            </div>
+                            <div class="group">
+                                <label for="distance_km">Distance (km)</label>
+                                <input type="number" id="distance_km" name="distance_km" step="0.01" required>
+                            </div>
+                            <div class="group">
+                                <label for="estimated_duration">Estimated Duration (minutes)</label>
+                                <input type="number" id="estimated_duration" name="estimated_duration" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Route</button>
+                        </form>
+                    </dialog>
 
                     <div class="dashboard-card">
                         <h2>Browse & Book Routes</h2>
@@ -28,79 +59,67 @@
                             </div>
                         </div>
 
-                        <div class="empty-state">
-                            <div class="empty-state-icon">🗺️</div>
-                            <h3>Browse Available Routes</h3>
-                            <p>
-                                Explore all available shuttle routes across Kenya. View departure times, arrival times,
-                                fare prices, estimated travel duration, available seats, and shuttle specifications.
-                                Compare routes and book your preferred trip.
-                            </p>
-                            <p style="color: var(--text-light); font-size: 0.95rem; margin-top: var(--spacing-md);">
-                                Features coming soon: real-time seat availability, price comparison, direct booking,
-                                vehicle details, driver ratings, and trip tracking.
-                            </p>
-                        </div>
+                       
                     </div>
+                    <div class="routes-list">
 
-                    <!-- Quick Route Categories -->
-                    <div class="dashboard-card">
-                        <h2>Popular Routes</h2>
-                        <div class="item-list">
-                            <div class="item-card">
-                                <div class="item-info">
-                                    <h4>Nairobi ↔ Kisumu</h4>
-                                    <div class="item-details">
-                                        <span class="item-detail"><strong>Departure:</strong> Daily at 6:00 AM, 12:00
-                                            PM, 6:00 PM</span>
-                                        <span class="item-detail"><strong>Duration:</strong> ~6-7 hours</span>
-                                        <span class="item-detail"><strong>Fare:</strong> From KES 900</span>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary btn-sm">Book Now</button>
-                            </div>
+      <!-- origin, destination, base_price, distance_km, estimated_duration in a tables -->
 
-                            <div class="item-card">
-                                <div class="item-info">
-                                    <h4>Nairobi ↔ Eldoret</h4>
-                                    <div class="item-details">
-                                        <span class="item-detail"><strong>Departure:</strong> Daily at 8:00 AM, 2:00 PM,
-                                            8:00 PM</span>
-                                        <span class="item-detail"><strong>Duration:</strong> ~4-5 hours</span>
-                                        <span class="item-detail"><strong>Fare:</strong> From KES 1,200</span>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary btn-sm">Book Now</button>
-                            </div>
+        <table class="routes-table">
+          <thead>
+            <tr>
+              <th>Origin</th>
+              <th>Destination</th>
+              <th>Base Price</th>
+              <th>Distance (km)</th>
+              <th>Estimated Duration (hours)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% routes.forEach(route => { %>
+              <tr>
+                <td><%= route.origin %></td>
+                <td><%= route.destination %></td>
+                <td>$<%= route.base_price %></td>
+                <td><%= route.distance_km %> km</td>
+                <td><%= route.estimated_duration %> hours</td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
 
-                            <div class="item-card">
-                                <div class="item-info">
-                                    <h4>Eldoret ↔ Kitale</h4>
-                                    <div class="item-details">
-                                        <span class="item-detail"><strong>Departure:</strong> Daily at 9:00 AM, 3:00 PM,
-                                            9:00 PM</span>
-                                        <span class="item-detail"><strong>Duration:</strong> ~2-3 hours</span>
-                                        <span class="item-detail"><strong>Fare:</strong> From KES 600</span>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary btn-sm">Book Now</button>
-                            </div>
+      </div>
 
-                            <div class="item-card">
-                                <div class="item-info">
-                                    <h4>Nairobi ↔ Mombasa</h4>
-                                    <div class="item-details">
-                                        <span class="item-detail"><strong>Departure:</strong> Daily at 7:00 AM, 1:00 PM,
-                                            7:00 PM</span>
-                                        <span class="item-detail"><strong>Duration:</strong> ~8-9 hours</span>
-                                        <span class="item-detail"><strong>Fare:</strong> From KES 1,500</span>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary btn-sm">Book Now</button>
-                            </div>
-                        </div>
-                    </div>
+    
+    </div>
                 </main>
         </div>
+
+        <script>
+            const addRouteModal = document.getElementById('addRouteModal');
+            const openAddRouteModalBtn = document.getElementById('openAddRouteModalBtn');
+            const closeAddRouteModalBtn = document.getElementById('closeAddRouteModalBtn');
+
+            openAddRouteModalBtn.addEventListener('click', () => {
+                addRouteModal.showModal();
+            });
+
+            closeAddRouteModalBtn.addEventListener('click', () => {
+                addRouteModal.close();
+            });
+
+            // Close when clicking outside
+            addRouteModal.addEventListener('click', (e) => {
+                const dialogDimensions = addRouteModal.getBoundingClientRect()
+                if (
+                    e.clientX < dialogDimensions.left ||
+                    e.clientX > dialogDimensions.right ||
+                    e.clientY < dialogDimensions.top ||
+                    e.clientY > dialogDimensions.bottom
+                ) {
+                    addRouteModal.close()
+                }
+            });
+        </script>
 
         <%- include('dashboard-footer') %>

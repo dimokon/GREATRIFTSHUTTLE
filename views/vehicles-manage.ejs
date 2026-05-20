@@ -1,0 +1,127 @@
+<% const title = 'Manage Vehicles - Great Rift Shuttle'; %>
+<%- include('dashboard-header') %>
+
+<div class="dashboard-wrapper">
+    <%- include('dashboard-aside', { activePage: 'vehicles' }) %>
+
+    <main class="dashboard-main">
+        <div class="dashboard-header">
+            <h1>Manage Vehicles</h1>
+            <button id="openAddVehicleModalBtn" class="btn btn-primary">Add New Vehicle</button>
+        </div>
+
+        <dialog id="addVehicleModal" class="dashboard-card modal-dialog">
+            <div class="modal-header">
+                <h2>Add Vehicle</h2>
+                <button id="closeAddVehicleModalBtn" class="close-btn">&times;</button>
+            </div>
+            <form action="/add-vehicle" method="post">
+                <div class="group">
+                    <label for="number_plate">Vehicle Plate</label>
+                    <input type="text" id="number_plate" name="number_plate" required>
+                </div>
+                <div class="group">
+                    <label for="model">Model</label>
+                    <input type="text" id="model" name="model" required>
+                </div>
+                <div class="group">
+                    <label for="color">Color</label>
+                    <input type="text" id="color" name="color" required>
+                </div>
+                <div class="group">
+                    <label for="capacity">Capacity</label>
+                    <input type="number" id="capacity" name="capacity" required>
+                </div>
+                <div class="group">
+                    <label for="exterior_img_url">Exterior Image URL</label>
+                    <input type="url" id="exterior_img_url" name="exterior_img_url">
+                </div>
+                <div class="group">
+                    <label for="interior_img_url">Interior Image URL</label>
+                    <input type="url" id="interior_img_url" name="interior_img_url">
+                </div>
+                <div class="group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option value="active">Active</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="retired">Retired</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Save Vehicle</button>
+            </form>
+        </dialog>
+
+        <div class="dashboard-card">
+            <h2>Vehicle Fleet</h2>
+
+            <div class="card-controls">
+                <div class="search-box">
+                    <input type="text" placeholder="Search vehicles by plate, model or status..." />
+                </div>
+            </div>
+
+            <div class="vehicles-list">
+                <table class="routes-table">
+                    <thead>
+                        <tr>
+                            <th>Plate</th>
+                            <th>Model</th>
+                            <th>Color</th>
+                            <th>Capacity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% (vehicles || []).forEach(vehicle => { %>
+                            <tr>
+                                <td><%= vehicle.number_plate %></td>
+                                <td><%= vehicle.model %></td>
+                                <td><%= vehicle.color %></td>
+                                <td><%= vehicle.capacity %></td>
+                                <td>
+                                    <form action="/update-vehicle-status" method="post" class="status-form">
+                                        <input type="hidden" name="number_plate" value="<%= vehicle.number_plate %>">
+                                        <select name="status" class="status-select" onchange="this.form.submit()" required>
+                                            <option value="active" <%= vehicle.status === 'active' ? 'selected' : '' %>>Active</option>
+                                            <option value="maintenance" <%= vehicle.status === 'maintenance' ? 'selected' : '' %>>Maintenance</option>
+                                            <option value="retired" <%= vehicle.status === 'retired' ? 'selected' : '' %>>Retired</option>
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    const addVehicleModal = document.getElementById('addVehicleModal');
+    const openAddVehicleModalBtn = document.getElementById('openAddVehicleModalBtn');
+    const closeAddVehicleModalBtn = document.getElementById('closeAddVehicleModalBtn');
+
+    openAddVehicleModalBtn.addEventListener('click', () => {
+        addVehicleModal.showModal();
+    });
+
+    closeAddVehicleModalBtn.addEventListener('click', () => {
+        addVehicleModal.close();
+    });
+
+    addVehicleModal.addEventListener('click', (e) => {
+        const dialogDimensions = addVehicleModal.getBoundingClientRect();
+        if (
+            e.clientX < dialogDimensions.left ||
+            e.clientX > dialogDimensions.right ||
+            e.clientY < dialogDimensions.top ||
+            e.clientY > dialogDimensions.bottom
+        ) {
+            addVehicleModal.close();
+        }
+    });
+</script>
+
+<%- include('dashboard-footer') %>

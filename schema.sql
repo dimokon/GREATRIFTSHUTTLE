@@ -8,8 +8,10 @@ CREATE TABLE routes (
     destination VARCHAR(100) NOT NULL,
     base_price DECIMAL(10, 2) NOT NULL,
     distance_km INT,
-    estimated_duration TIME
+    estimated_duration INT
 );
+
+alter table routes modify column estimated_duration INT;
 
 CREATE TABLE vehicles (
     number_plate VARCHAR(20) PRIMARY KEY,
@@ -115,7 +117,9 @@ CREATE TABLE admin_users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO admin_users(username, password_hash) VALUES
+INSERT INTO admin_users(username, password_hash) VALUES 
+('james', "$2b$10$uzLrPFGdo/mvxHMXgSkfcuf83g3LoyWCByyDPagJkQXR1oXalloFi"),
+('messi', '$2b$10$x.JkLwXj.0AccMhM6maeG.haccU/DS9JO7KVWN19Yb3ZcLR5hyw2G'),
 ('kevin', '$2b$10$bmc/Hy973Mrws5VhLrHf7ercPolYZP2RchODxIPSIGz0Gv/eOOtHi'),
 ('ian', '$2b$10$XBizTFaMgfdq9cHbL9wfhe2Ws7pGwRnoJLuGim0pIurM4OuZ3F/z.');
 
